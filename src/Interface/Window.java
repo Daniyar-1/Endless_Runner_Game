@@ -8,7 +8,8 @@ class Window extends JFrame {
 
     public Window() {
         super("Endless Runner 1.0");
-        setSize(1024, 768);
+        setSize(600, 202);
+        setLocation(500,200);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         screen = new Screen();
         add(screen);
