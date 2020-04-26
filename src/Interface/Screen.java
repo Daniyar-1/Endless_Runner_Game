@@ -1,8 +1,6 @@
 package Interface;
 
-import Objects.Clouds;
-import Objects.Land;
-import Objects.MainCharacter;
+import Objects.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -22,6 +20,8 @@ public class Screen extends JPanel implements Runnable, KeyListener {
     private BufferedImage background;
     private Land land;
     private Clouds clouds;
+    private InteractsManager interManager;
+
 
     public Screen() {
         thread = new Thread(this);
@@ -29,6 +29,7 @@ public class Screen extends JPanel implements Runnable, KeyListener {
         mainCharacter.setX(50);
         land = new Land(this);
         clouds = new Clouds();
+        interManager = new InteractsManager();
     }
 
     public void startGame() {
@@ -43,6 +44,7 @@ public class Screen extends JPanel implements Runnable, KeyListener {
                 mainCharacter.update();
                 clouds.update();
                 land.update();
+                interManager.update();
                 repaint();
                 Thread.sleep(20);
             } catch (InterruptedException e) {
@@ -59,6 +61,8 @@ public class Screen extends JPanel implements Runnable, KeyListener {
         land.draw(g);
         clouds.draw(g);
         mainCharacter.draw(g);
+        interManager.draw(g);
+
     }
 
     @Override

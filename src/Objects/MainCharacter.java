@@ -12,32 +12,43 @@ public class MainCharacter {
     private float x = 0;
     private float y = 0;
     private float speedY = 0;
-    private Animation characterFlying;
+    private Animation characterRunning;
+    private Rectangle rectangle;
 
     public MainCharacter() {
-        characterFlying = new Animation(500);
-        characterFlying.addFrame(Resources.getResourcesImage("Data/main-character1.png"));
-        characterFlying.addFrame(Resources.getResourcesImage("Data/main-character2.png"));
+        characterRunning = new Animation(500);
+        characterRunning.addFrame(Resources.getResourcesImage("Data/chicken1.png"));
+        characterRunning.addFrame(Resources.getResourcesImage("Data/chicken2.png"));
+       /* characterRunning.addFrame(Resources.getResourcesImage("Data/main-character1.png"));
+        characterRunning.addFrame(Resources.getResourcesImage("Data/main-character2.png"));*/
+        rectangle = new Rectangle();
 
     }
 
 
     public void update() {
-        characterFlying.update();
-        if (y >= Screen.GROUNDY - characterFlying.getFrame().getHeight()) {
+        characterRunning.update();
+        if (y >= Screen.GROUNDY - characterRunning.getFrame().getHeight()) {
             speedY = 0;
-            y = Screen.GROUNDY - characterFlying.getFrame().getHeight();
+            y = Screen.GROUNDY - characterRunning.getFrame().getHeight();
         } else {
             speedY += Screen.GRAVITY;
             y += speedY;
-
         }
+        rectangle.x = (int) x;
+        rectangle.y = (int) y;
+        rectangle.width = characterRunning.getFrame().getWidth();
+        rectangle.height = characterRunning.getFrame().getHeight();
     }
+    public Rectangle getBound(){
+        return rectangle;
+    }
+
 
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);
-        g.drawRect((int) x, (int) y, characterFlying.getFrame().getWidth(), characterFlying.getFrame().getHeight());
-        g.drawImage(characterFlying.getFrame(),(int ) x,(int ) y, null);
+        g.drawRect((int) x, (int) y, characterRunning.getFrame().getWidth(), characterRunning.getFrame().getHeight());
+        g.drawImage(characterRunning.getFrame(), (int) x, (int) y, null);
     }
 
     public void jump() {
