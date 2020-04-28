@@ -15,7 +15,7 @@ public class Target extends InteractsWithTarget {
     public Target() {
         targetImg = Resources.getResourcesImage("Data/fence.png");
         positionX = 600;
-        positionY = 120;
+        positionY = 100;
         rectangle = new Rectangle();
 
     }
@@ -35,6 +35,21 @@ public class Target extends InteractsWithTarget {
     @Override
     public void draw(Graphics g) {
         g.drawImage(targetImg, positionX, positionY, null);
+
+    }
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
+    }
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
+    }
+
+    public void setImage(BufferedImage image){
+        this.targetImg = image;
+    }
+    @Override
+    public boolean isOutOfScreen(){
+        return (positionX + targetImg.getWidth() < 0);
 
     }
 }

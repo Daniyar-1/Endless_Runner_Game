@@ -8,19 +8,18 @@ import Utils.Resources;
 import java.awt.*;
 
 
-public class MainCharacter {
+public class Chicken {
     private float x = 0;
     private float y = 0;
     private float speedY = 0;
     private Animation characterRunning;
     private Rectangle rectangle;
+    private boolean isAlive = true;
 
-    public MainCharacter() {
+    public Chicken() {
         characterRunning = new Animation(500);
         characterRunning.addFrame(Resources.getResourcesImage("Data/chicken1.png"));
         characterRunning.addFrame(Resources.getResourcesImage("Data/chicken2.png"));
-       /* characterRunning.addFrame(Resources.getResourcesImage("Data/main-character1.png"));
-        characterRunning.addFrame(Resources.getResourcesImage("Data/main-character2.png"));*/
         rectangle = new Rectangle();
 
     }
@@ -40,7 +39,8 @@ public class MainCharacter {
         rectangle.width = characterRunning.getFrame().getWidth();
         rectangle.height = characterRunning.getFrame().getHeight();
     }
-    public Rectangle getBound(){
+
+    public Rectangle getBound() {
         return rectangle;
     }
 
@@ -78,5 +78,13 @@ public class MainCharacter {
 
     public void setSpeedY(float speedY) {
         this.speedY = speedY;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public boolean getAlive() {
+        return isAlive;
     }
 }
