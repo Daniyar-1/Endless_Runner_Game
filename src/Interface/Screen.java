@@ -1,5 +1,7 @@
 package Interface;
 
+import Common.Configuration;
+import Common.Score;
 import Objects.*;
 import Utils.Resources;
 
@@ -23,17 +25,21 @@ public class Screen extends JPanel implements Runnable, KeyListener {
     private Clouds clouds;
     private InteractsManager interManager;
     private BufferedImage gameOverImg;
+    private int score;
+    private int highestscore;
 
     private int gameState = GAME_FIRST_STATE;
 
 
     public Screen() {
+        highestscore = Configuration.getInstance().getHighScore();
         thread = new Thread(this);
         chicken = new Chicken();
         chicken.setX(50);
+        chicken.setY(110);
         land = new Land(this);
         clouds = new Clouds();
-        interManager = new InteractsManager(chicken);
+        interManager = new InteractsManager(chicken, this);
         gameOverImg = Resources.getResourcesImage("Data/game-over.png");
     }
 
@@ -48,7 +54,7 @@ public class Screen extends JPanel implements Runnable, KeyListener {
             try {
                 update();
                 repaint();
-                Thread.sleep(20);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
 
             }
@@ -67,25 +73,30 @@ public class Screen extends JPanel implements Runnable, KeyListener {
                 }
                 break;
         }
+    }
 
-
+    public void addingScore(int score) {
+        this.score += score;
     }
 
     public void paint(Graphics g) {
         g.setColor(Color.decode("#f7f7f7"));
-        g.setColor(Color.white);
         g.fillRect(0, 0, getWidth(), getHeight());
+        g.setColor(Color.black);
         g.drawLine(0, (int) GROUNDY, getWidth(), (int) GROUNDY);
 
         switch (gameState) {
             case GAME_FIRST_STATE:
                 chicken.draw(g);
+                g.drawString("Press SPACE to start", 230, 30);
                 break;
             case GAME_PLAY_STATE:
                 land.draw(g);
                 clouds.draw(g);
                 chicken.draw(g);
                 interManager.draw(g);
+                g.drawString("Score: " + String.valueOf(score), 500, 40);
+                g.drawString("Highest Score: " + String.valueOf(highestscore), 458, 20);
                 break;
             case GAME_OVER_STATE:
                 land.draw(g);
@@ -97,6 +108,14 @@ public class Screen extends JPanel implements Runnable, KeyListener {
 
     }
 
+    private void resetGame() {
+        chicken.setAlive(true);
+        chicken.setX(50);
+        chicken.setY(110);
+        interManager.reset();
+        score = 0;
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -105,9 +124,10 @@ public class Screen extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-      /*  switch (e.getKeyCode()) {
-            case KeyEvent.VK_SPACE: {*/
-        /*    }*/
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_SPACE: {
+            }
+        }
     }
 
     @Override
@@ -119,6 +139,11 @@ public class Screen extends JPanel implements Runnable, KeyListener {
                 } else if (gameState == GAME_PLAY_STATE) {
                     chicken.jump();
                 } else if (gameState == GAME_OVER_STATE) {
+                    if(score > highestscore) {
+                        highestscore = score;
+                        Configuration.getInstance().saveGameHighScore(highestscore);
+                    }
+                    resetGame();
                     gameState = GAME_PLAY_STATE;
                 }
                 break;

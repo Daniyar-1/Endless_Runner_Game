@@ -1,5 +1,8 @@
 package Interface;
 
+import Common.Configuration;
+import Common.Score;
+
 import javax.swing.*;
 
 
@@ -21,9 +24,11 @@ class Window extends JFrame {
     }
 
     public static void main(String[] args) {
+
       Window window =  new Window();
       window.setVisible(true);
       window.startGame();
+      Screen screen = new Screen();
     }
 
 }
